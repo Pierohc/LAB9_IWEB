@@ -11,27 +11,23 @@
 <section>
   <div class="form-box">
     <div class="form-value">
-      <form action="">
+      <form method="post" action="/login">
 
         <h2>Login</h2>
 
         <div class="inputbox">
           <ion-icon name="mail-outline"></ion-icon>
-          <input type="email" required>
+          <input type="email" name="correo" required>
           <label for="">Usuario</label>
         </div>
 
         <div class="inputbox">
           <ion-icon name="lock-closed-outline"></ion-icon>
-          <input type="password" required>
+          <input type="password" name="password" required>
           <label for="">Contraseña</label>
         </div>
 
-        <button>Ingresar</button>
-
-        <div class="register">
-          <p>Don't have a account <a href="#">Register</a></p>
-        </div>
+        <button type="submit">Ingresar</button>
 
       </form>
     </div>
