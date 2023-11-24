@@ -11,7 +11,7 @@
 <section>
   <div class="form-box">
     <div class="form-value">
-      <form method="post" action="/login">
+      <form method="post" action="<%=request.getContextPath()%>/login?action=login">
 
         <h2>Login</h2>
 
