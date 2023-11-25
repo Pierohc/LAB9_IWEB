@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
 
                         response.sendRedirect(request.getContextPath() +"/decano?action=home");
                     } else if(usuario.getIdRol() == 4){
-
+                        response.sendRedirect(request.getContextPath() +"/docente?action=home");
                     }
 
 

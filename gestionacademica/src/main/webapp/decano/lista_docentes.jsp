@@ -34,10 +34,10 @@
     <nav class="nav-bar">
         <ul>
             <li>
-                <a href="<%=request.getContextPath()%>/decano?action=home" class="active">Cursos</a>
+                <a href="<%=request.getContextPath()%>/decano?action=home" >Cursos</a>
             </li>
             <li>
-                <a href="#">Docentes</a>
+                <a href="<%=request.getContextPath()%>/decano?action=docentes" class="active">Docentes</a>
             </li>
             <li>
                 <a href="<%=request.getContextPath()%>/login"><i class="fa-solid fa-door-open nav-icon2"></i>Cerrar Sesión</a>
@@ -53,7 +53,7 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
         <div class="py-5">
             <h1 class="display-5 fw-bold text-white">Bienvenido, decano: <%=userLog.getNombre()%></h1>
             <div style="margin-bottom: 20px"></div>
-            <h3 class="fw-bold text-white">Panel de Lista de Cursos de su Facultad</h3>
+            <h3 class="fw-bold text-white">Panel de Lista de Docentes</h3>
             <div style="margin-bottom: 20px"></div>
             <div class="justify-content-sm-center">
             </div>

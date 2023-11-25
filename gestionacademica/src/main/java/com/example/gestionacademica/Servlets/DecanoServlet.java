@@ -2,10 +2,7 @@ package com.example.gestionacademica.Servlets;
 
 import com.example.gestionacademica.Models.Beans.Curso;
 import com.example.gestionacademica.Models.Beans.Usuario;
-import com.example.gestionacademica.Models.Daos.CursoDao;
-import com.example.gestionacademica.Models.Daos.CursoHasDocenteDao;
-import com.example.gestionacademica.Models.Daos.FacultadHasDecanoDao;
-import com.example.gestionacademica.Models.Daos.UserDao;
+import com.example.gestionacademica.Models.Daos.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -26,8 +23,10 @@ public class DecanoServlet extends HttpServlet {
 
 
         FacultadHasDecanoDao fhd = new FacultadHasDecanoDao();
+        CursoHasDocenteDao chd = new CursoHasDocenteDao();
         CursoDao cursoDao = new CursoDao();
         UserDao userDao = new UserDao();
+        EvaluacionesDao evDao = new EvaluacionesDao();
 
         if(usuario != null && usuario.getIdRol() == 3){
 
@@ -38,8 +37,11 @@ public class DecanoServlet extends HttpServlet {
                     Integer idFacultad = fhd.obtenerIdFacultad(usuario.getIdUsuario());
                     System.out.println("el id de la facultad: " + idFacultad);
                     ArrayList<Curso> listaCursos = cursoDao.obtenerCursosFacultad(idFacultad);
-                    System.out.println("tamaño de la lista de cursos: " + listaCursos.size());
+                    ArrayList<Curso> cursosSinEv = cursoDao.obtenerCursosSinEvFacultad(idFacultad);
+                    ArrayList<Curso> cursosConEv = cursoDao.obtenerCursosConEvFacultad(idFacultad);
 
+                    request.setAttribute("cursosSinEv", cursosSinEv);
+                    request.setAttribute("cursosConEv", cursosConEv);
                     request.setAttribute("listaCursos", listaCursos);
                     request.getRequestDispatcher("/decano/cursos.jsp").forward(request,response);
                     break;
@@ -87,6 +89,23 @@ public class DecanoServlet extends HttpServlet {
                     request.setAttribute("listaCursos", cursos);
                     request.setAttribute("docentesSinCurso", docentesSinCurso2);
                     request.getRequestDispatcher("/decano/new_curso.jsp").forward(request,response);
+                    break;
+
+                case "editCurso":
+                    String idCurso = request.getParameter("idCurso");
+                    Curso searchedCurso = cursoDao.obtenerCursoXid(Integer.parseInt(idCurso));
+                    ArrayList<Curso> cursos2 = cursoDao.listarTodosCursos();
+                    request.setAttribute("listaCursos", cursos2);
+                    request.setAttribute("curso", searchedCurso);
+                    request.getRequestDispatcher("/decano/edit_curso.jsp").forward(request,response);
+
+                    break;
+
+                case "deleteCurso":
+                    String idCursoDelete = request.getParameter("idCurso");
+                    chd.eliminarCursoConDocente(Integer.parseInt(idCursoDelete));
+                    cursoDao.eliminarCurso(Integer.parseInt(idCursoDelete));
+                    response.sendRedirect(request.getContextPath()+"/decano?action=home");
                     break;
 
 
@@ -146,15 +165,17 @@ public class DecanoServlet extends HttpServlet {
                 Curso lastCurso = cursos.get(cursos.size() - 1);
                 Integer idCurso = lastCurso.getIdCurso() + 1;
 
-
-                System.out.println(nombreCurso);
-                System.out.println(codigo);
-                System.out.println(docenteId);
-                System.out.println(idFacultad);
-                System.out.println(idCurso);
-
                 cursoDao.crearCurso(idCurso, codigo, nombreCurso, idFacultad);
                 chd.crearCursoConDocente(idCurso, Integer.parseInt(docenteId));
+                response.sendRedirect(request.getContextPath()+"/decano?action=home");
+
+                break;
+
+            case "editCurso":
+                String newNombre = request.getParameter("nombre");
+                String idCursoEdit = request.getParameter("idCurso");
+
+                cursoDao.editCurso(newNombre, Integer.parseInt(idCursoEdit));
                 response.sendRedirect(request.getContextPath()+"/decano?action=home");
 
                 break;

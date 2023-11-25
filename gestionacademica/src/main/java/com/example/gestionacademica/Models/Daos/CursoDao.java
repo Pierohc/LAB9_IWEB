@@ -34,6 +34,65 @@ public class CursoDao extends DaoBase{
         return list;
     }
 
+
+    public ArrayList<Curso> obtenerCursosConEvFacultad(Integer idFacultad){
+        ArrayList<Curso> list = new ArrayList<>();
+
+        String sql = "SELECT c.*\n" +
+                "from evaluaciones e\n" +
+                "left join curso c on e.idcurso = c.idcurso\n" +
+                "where idfacultad = ?\n" +
+                "group by idcurso";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, idFacultad);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                while (rs.next()) {
+                    Curso curso = new Curso();
+                    fetchData(rs, curso);
+                    list.add(curso);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+
+    public ArrayList<Curso> obtenerCursosSinEvFacultad(Integer idFacultad){
+        ArrayList<Curso> list = new ArrayList<>();
+
+        String sql = "SELECT c.*\n" +
+                "from curso c\n" +
+                "left join evaluaciones e on c.idcurso = e.idcurso\n" +
+                "where e.idevaluaciones is NULL and idfacultad = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, idFacultad);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                while (rs.next()) {
+                    Curso curso = new Curso();
+                    fetchData(rs, curso);
+                    list.add(curso);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+
+
     public ArrayList<Curso> listarTodosCursos(){
         ArrayList<Curso> list = new ArrayList<>();
 
@@ -82,7 +141,66 @@ public class CursoDao extends DaoBase{
         }
     }
 
+    public Curso obtenerCursoXid(Integer idCurso){
+        Curso curso = null;
 
+        String sql = "SELECT * FROM curso where idcurso = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, idCurso);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                while (rs.next()) {
+                    curso = new Curso();
+                    fetchData(rs, curso);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return curso;
+    }
+
+
+    public void editCurso(String nombre, Integer idCurso){
+
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String fechaHoraFormateada = fechaHoraActual.format(formato);
+
+        String sql = "update curso set nombre=?, fecha_edicion=? where idcurso=? ";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(1, nombre);
+            pstmt.setString(2, fechaHoraFormateada);
+            pstmt.setInt(3, idCurso);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void eliminarCurso(Integer idCurso){
+
+        String sql = "delete from curso where idcurso = ? ";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1, idCurso);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 

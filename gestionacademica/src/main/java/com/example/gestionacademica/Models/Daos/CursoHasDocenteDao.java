@@ -24,4 +24,20 @@ public class CursoHasDocenteDao extends DaoBase{
         }
     }
 
+
+    public void eliminarCursoConDocente(Integer idCurso){
+
+        String sql = "delete from curso_has_docente where idcurso = ? ";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1, idCurso);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

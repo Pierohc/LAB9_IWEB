@@ -68,7 +68,7 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
         <div class="py-5">
             <h1 class="display-5 fw-bold text-white">Bienvenido, decano: <%=userLog.getNombre()%></h1>
             <div style="margin-bottom: 20px"></div>
-            <h3 class="fw-bold text-white">Panel de Registro de docente</h3>
+            <h3 class="fw-bold text-white">Panel de Registro de Curso</h3>
             <div style="margin-bottom: 20px"></div>
             <div class="justify-content-sm-center">
             </div>

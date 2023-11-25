@@ -73,14 +73,14 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
 
         <thead>
 
-            <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Codigo</th>
-                <th scope="col">Fecha de Registro</th>
-                <th scope="col">Fecha de Edición</th>
-                <th scope="col">Editar</th>
-                <th scope="col">Borrar</th>
-            </tr>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Codigo</th>
+            <th scope="col">Fecha de Registro</th>
+            <th scope="col">Fecha de Edición</th>
+            <th scope="col">Editar</th>
+            <th scope="col">Borrar</th>
+        </tr>
         </thead>
 
         <tbody class="table-group-divider">
@@ -97,14 +97,14 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
         <%}%>
 
         <%for (Curso curso : cursosSinEv){ %>
-            <tr>
-                <td><%=curso.getNombre()%></td>
-                <td><%=curso.getCodigo()%></td>
-                <td><%=curso.getFechaRegistro()%></td>
-                <td><%=curso.getFechaEdicion()%></td>
-                <td class="cell c5" ><a href="<%=request.getContextPath()%>/decano?action=editCurso&idCurso=<%=curso.getIdCurso()%>"><img width="24" height="24" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/create-new--v2.png" alt="edit-row"/></a></td>
-                <td class="cell c6 "><a onclick="confirmarBorrado(event)" href="<%=request.getContextPath()%>/decano?action=deleteCurso&idCurso=<%=curso.getIdCurso()%>"><img width="24" height="24" src="https://img.icons8.com/material-outlined/24/FFFFFF/filled-trash.png" alt="filled-trash"/></a></td>
-            </tr>
+        <tr>
+            <td><%=curso.getNombre()%></td>
+            <td><%=curso.getCodigo()%></td>
+            <td><%=curso.getFechaRegistro()%></td>
+            <td><%=curso.getFechaEdicion()%></td>
+            <td class="cell c5" ><a href="<%=request.getContextPath()%>/decano?action=editCurso&idCurso=<%=curso.getIdCurso()%>"><img width="24" height="24" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/create-new--v2.png" alt="edit-row"/></a></td>
+            <td class="cell c6 "><a href="<%=request.getContextPath()%>/decano?action=deleteCurso&idCurso=<%=curso.getIdCurso()%>"><img width="24" height="24" src="https://img.icons8.com/material-outlined/24/FFFFFF/filled-trash.png" alt="filled-trash"/></a></td>
+        </tr>
         <%}%>
         </tbody>
 
@@ -114,13 +114,7 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
 </div>
 <br><br><br>
 
-<script>
-    function confirmarBorrado(event) {
-        if (!confirm('¿Estás seguro de que deseas borrar este docente?')) {
-            event.preventDefault(); // Evita la acción predeterminada del enlace
-        }
-    }
-</script>
+
 <script src="js/bootstrap/bootstrap.js"></script>
 <script src="../js/bootstrap/bootstrap.min.js"></script>
 </body>

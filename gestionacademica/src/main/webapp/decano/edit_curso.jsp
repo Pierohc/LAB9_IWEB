@@ -5,10 +5,12 @@
 <%@ page import="com.sun.jdi.ArrayReference" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean scope="session" id="userLog" type="com.example.gestionacademica.Models.Beans.Usuario"   class="com.example.gestionacademica.Models.Beans.Usuario"></jsp:useBean>
-<%ArrayList<Usuario> listaTotal = (ArrayList<Usuario>) request.getAttribute("listaTotal");
-  ArrayList<String> nombresEnUso = new ArrayList<>();
-    for(Usuario u : listaTotal){
-        nombresEnUso.add(u.getNombre());
+<% Curso curso = (Curso) request.getAttribute("curso");
+
+    ArrayList<Curso> listaTotal = (ArrayList<Curso>) request.getAttribute("listaCursos");
+    ArrayList<String> nombresEnUso = new ArrayList<>();
+    for(Curso c : listaTotal){
+        nombresEnUso.add(c.getNombre());
     }
 %>
 
@@ -47,10 +49,10 @@
     <nav class="nav-bar">
         <ul>
             <li>
-                <a href="<%=request.getContextPath()%>/decano?action=home">Cursos</a>
+                <a href="<%=request.getContextPath()%>/decano?action=home" class="active">Cursos</a>
             </li>
             <li>
-                <a href="<%=request.getContextPath()%>/decano?action=docentes" class="active">Docentes</a>
+                <a href="<%=request.getContextPath()%>/decano?action=docentes">Docentes</a>
             </li>
             <li>
                 <a href="<%=request.getContextPath()%>/login"><i class="fa-solid fa-door-open nav-icon2"></i>Cerrar Sesión</a>
@@ -66,7 +68,7 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
         <div class="py-5">
             <h1 class="display-5 fw-bold text-white">Bienvenido, decano: <%=userLog.getNombre()%></h1>
             <div style="margin-bottom: 20px"></div>
-            <h3 class="fw-bold text-white">Panel de Registro de Docente</h3>
+            <h3 class="fw-bold text-white">Panel de Edición de Curso</h3>
             <div style="margin-bottom: 20px"></div>
             <div class="justify-content-sm-center">
             </div>
@@ -82,38 +84,25 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
 
     <div class="row">
         <div class="col-lg-6 col-md-12" style="text-align: left; padding-top: 1.5em">
-            <form id="form" method="post" action="<%=request.getContextPath()%>/decano?action=newd">
+            <form id="form" method="post" action="<%=request.getContextPath()%>/decano?action=editCurso">
                 <div class="card">
                     <div class="card-body" style="padding-left: 35px">
 
                         <div style="padding-top: 1.5em;"></div>
                         <div class="form-group" style="padding-right: 1rem">
                             <label style="text-align: left;">
-                                <strong>Nombre:</strong></label>
-                            <input type="text" class="form-control" name="nombre" id="nombre" required>
+                                <strong>Nombre del curso:</strong></label>
+                            <input type="text" class="form-control" name="nombre" id="nombre" value="<%=curso.getNombre()%>" required>
                         </div>
 
 
                         <div style="padding-top: 1.5em;"></div>
                         <div class="form-group" style="padding-right: 1rem">
                             <label style="text-align: left;">
-                                <strong>Correo:</strong></label>
-                            <input type="email"  class="form-control" name="correo" required>
-                        </div>
+                                <strong>Código del curso:</strong></label>
+                            <input type="text"  class="form-control" value="<%=curso.getCodigo()%>" readonly>
+                            <input type="hidden"  class="form-control" name="idCurso" value="<%=curso.getIdCurso()%>">
 
-
-                        <div style="padding-top: 1.5em;"></div>
-                        <div class="form-group" style="padding-right: 1rem">
-                            <label style="text-align: left;">
-                                <strong>Contraseña:</strong></label>
-                            <input type="password" id="contrasena" class="form-control" name="passwd" required>
-                        </div>
-
-
-                        <div style="padding-top: 1.5em;"></div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="mostrarContrasena" >
-                            <label class="form-check-label" for="flexCheckDefault">Mostrar contraseña</label>
                         </div>
 
 
@@ -124,7 +113,7 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
                 <br>
                 <div class="uk-flex uk-flex-center uk-margin-top">
                     <div class="uk-flex uk-flex-center">
-                        <a id="redirect-button" class="btn btn-secondary m-2" href="<%=request.getContextPath()%>/decano?action=docentes">Cancelar</a>
+                        <a id="redirect-button" class="btn btn-secondary m-2" href="<%=request.getContextPath()%>/decano?action=home">Cancelar</a>
                         <button type="submit" class="btn btn-primary m-2">Guardar</button>
                     </div>
                 </div>
@@ -149,27 +138,26 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
 <script>
     const nombre = document.getElementById("nombre")
     const form = document.getElementById("form")
+    const nombreActual = '<%=curso.getNombre()%>'
     form.addEventListener("submit", e=>{
 
         if(usedNames.includes(nombre.value)){
-            showError('El nombre ingresado ya está en uso')
-            e.preventDefault()
+
+            if(nombre.value == nombreActual){
+
+
+            }else{
+                showError('El nombre ingresado ya está en uso')
+                e.preventDefault()
+            }
+
         }else{
 
         }
     })
 </script>
 
-<script>
-    document.getElementById("mostrarContrasena").addEventListener("change", function() {
-        var contrasenaInput = document.getElementById("contrasena");
-        if (this.checked) {
-            contrasenaInput.type = "text";
-        } else {
-            contrasenaInput.type = "password";
-        }
-    });
-</script>
+
 
 <script src="js/bootstrap/bootstrap.js"></script>
 <script src="/js/bootstrap/bootstrap.esm.js"></script>
@@ -177,3 +165,4 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
 
 </body>
 </html>
+
