@@ -52,10 +52,13 @@ public class LoginServlet extends HttpServlet {
                     httpSession.setAttribute("userLog", usuario);
 
                     if(usuario.getIdRol() == 3){
-
                         response.sendRedirect(request.getContextPath() +"/decano?action=home");
+
                     } else if(usuario.getIdRol() == 4){
                         response.sendRedirect(request.getContextPath() +"/docente?action=home");
+
+                    }else{
+                        response.sendRedirect(request.getContextPath());
                     }
 
 

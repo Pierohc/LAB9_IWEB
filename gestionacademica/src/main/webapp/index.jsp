@@ -4,7 +4,7 @@
 <head>
   <link rel="stylesheet" href="css/index.css">
 
-  <title>Ininio de Sesión</title>
+  <title>Inicio de Sesión</title>
 </head>
 <body>
 

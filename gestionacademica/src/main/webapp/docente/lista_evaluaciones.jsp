@@ -1,11 +1,12 @@
 <%@ page import="java.lang.reflect.Array" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.gestionacademica.Models.Beans.Curso" %>
+<%@ page import="com.example.gestionacademica.Models.Beans.Evaluaciones" %>
+<%@ page import="com.example.gestionacademica.Models.Beans.Semestre" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean scope="session" id="userLog" type="com.example.gestionacademica.Models.Beans.Usuario"   class="com.example.gestionacademica.Models.Beans.Usuario"></jsp:useBean>
-<% ArrayList<Curso> listaCursos = (ArrayList<Curso>) request.getAttribute("listaCursos");
-    ArrayList<Curso> cursosConEv = (ArrayList<Curso>) request.getAttribute("cursosConEv");
-    ArrayList<Curso> cursosSinEv= (ArrayList<Curso>) request.getAttribute("cursosSinEv");%>
+<% ArrayList<Evaluaciones> listaEvaluaciones = (ArrayList<Evaluaciones>) request.getAttribute("listaEvaluaciones");
+    Semestre semestreHabilitado = (Semestre) request.getAttribute("semestreHabilitado"); %>
 
 
 <html>
@@ -14,9 +15,9 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/slide-bar.css">
     <link rel="stylesheet" href="css/boostrap/bootstrap.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-
-    <title>Title</title>
+   <title>Lista de Evaluaciones</title>
 </head>
 <body style="background: #1a1d20">
 
@@ -32,11 +33,9 @@
     <nav class="nav-bar">
         <ul>
             <li>
-                <a href="<%=request.getContextPath()%>/decano?action=home" class="active">Cursos</a>
+                <a href="<%=request.getContextPath()%>/docente?action=home" class="active">Evaluaciones</a>
             </li>
-            <li>
-                <a href="<%=request.getContextPath()%>/decano?action=docentes">Docentes</a>
-            </li>
+
             <li>
                 <a href="<%=request.getContextPath()%>/login"><i class="fa-solid fa-door-open nav-icon2"></i>Cerrar Sesión</a>
             </li>
@@ -49,9 +48,9 @@
 background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgba(21,0,48,1) 100%) !important;">
     <div class="text-secondary px-4 py-5 text-center">
         <div class="py-5">
-            <h1 class="display-5 fw-bold text-white">Bienvenido, decano: <%=userLog.getNombre()%></h1>
+            <h1 class="display-5 fw-bold text-white">Bienvenido, Docente: <%=userLog.getNombre()%></h1>
             <div style="margin-bottom: 20px"></div>
-            <h3 class="fw-bold text-white">Panel de Lista de Cursos de Facultad</h3>
+            <h3 class="fw-bold text-white">Panel de Lista de Evaluaciones</h3>
             <div style="margin-bottom: 20px"></div>
             <div class="justify-content-sm-center">
             </div>
@@ -63,8 +62,38 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
 <br>
 <div class="container">
 
-    <div>
-        <a class="btn btn-primary" style="margin-left: 2px;" href="<%=request.getContextPath()%>/decano?action=newCurso">Registrar Curso</a>
+
+    <div class="row">
+
+
+        <div class="col-md-8">
+            <div>
+                <a class="btn btn-primary" style="margin-left: 2px;" href="<%=request.getContextPath()%>/docente?action=newEv">Registrar Evaluación</a>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="btn-group" style="margin-left:80px">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">SEMESTRE</button>
+                <ul class="dropdown-menu dropdown-menu-lg-end">
+                    <form method="post" action="<%=request.getContextPath()%>/docente?action=filtro&filter=current">
+                        <li><button class="dropdown-item" type="submit">Semestre actual</button></li>
+                    </form>
+                    <form method="post" action="<%=request.getContextPath()%>/docente?action=filtro&filter=past">
+                        <li><button class="dropdown-item" type="submit">Semestres pasados</button></li>
+                    </form>
+
+                </ul>
+            </div>
+
+
+            <a class="btn btn-primary" href="<%=request.getContextPath()%>/docente?action=home" role="button">Borrar filtros</a>
+
+        </div>
+
+
+
     </div>
 
     <br>
@@ -74,10 +103,12 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
         <thead>
 
         <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Codigo</th>
-            <th scope="col">Fecha de Registro</th>
-            <th scope="col">Fecha de Edición</th>
+            <th scope="col">Estudiante</th>
+            <th scope="col">Codigo Estudiante</th>
+            <th scope="col">Correo Estudiante</th>
+            <th scope="col">Nota</th>
+            <th scope="col">Fecha Registro</th>
+            <th scope="col">Fecha Edición</th>
             <th scope="col">Editar</th>
             <th scope="col">Borrar</th>
         </tr>
@@ -85,27 +116,26 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
 
         <tbody class="table-group-divider">
 
-        <%for (Curso curso : cursosConEv){ %>
+        <%for (Evaluaciones evaluacion : listaEvaluaciones){ %>
         <tr>
-            <td><%=curso.getNombre()%></td>
-            <td><%=curso.getCodigo()%></td>
-            <td><%=curso.getFechaRegistro()%></td>
-            <td><%=curso.getFechaEdicion()%></td>
-            <td class="cell c5" ><a href="<%=request.getContextPath()%>/decano?action=editCurso&idCurso=<%=curso.getIdCurso()%>"><img width="24" height="24" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/create-new--v2.png" alt="edit-row"/></a></td>
+            <td><%=evaluacion.getNombreEstudiante()%></td>
+            <td><%=evaluacion.getCodigoEstudiante()%></td>
+            <td><%=evaluacion.getCorreoEstudiante()%></td>
+            <td><%=evaluacion.getNota()%></td>
+            <td><%=evaluacion.getFechaRegistro()%></td>
+            <td><%=evaluacion.getFechaEdicion()%></td>
+            <td class="cell c5" ><a href="<%=request.getContextPath()%>/docente?action=editEv&id=<%=evaluacion.getIdevaluacion()%>"><img width="24" height="24" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/create-new--v2.png" alt="edit-row"/></a></td>
+
+            <% if (evaluacion.getIdSemestre() == semestreHabilitado.getIdSemestre()){ %>
+            <td class="cell c6 "><a onclick="confirmarBorrado(event)" href="<%=request.getContextPath()%>/docente?action=deleteEv&id=<%=evaluacion.getIdevaluacion()%>"><img width="24" height="24" src="https://img.icons8.com/material-outlined/24/FFFFFF/filled-trash.png" alt="filled-trash"/></a></td>
+            <% }else{ %>
             <td class="cell c6 "></td>
+            <%}%>
+
         </tr>
         <%}%>
 
-        <%for (Curso curso : cursosSinEv){ %>
-        <tr>
-            <td><%=curso.getNombre()%></td>
-            <td><%=curso.getCodigo()%></td>
-            <td><%=curso.getFechaRegistro()%></td>
-            <td><%=curso.getFechaEdicion()%></td>
-            <td class="cell c5" ><a href="<%=request.getContextPath()%>/decano?action=editCurso&idCurso=<%=curso.getIdCurso()%>"><img width="24" height="24" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/create-new--v2.png" alt="edit-row"/></a></td>
-            <td class="cell c6 "><a href="<%=request.getContextPath()%>/decano?action=deleteCurso&idCurso=<%=curso.getIdCurso()%>"><img width="24" height="24" src="https://img.icons8.com/material-outlined/24/FFFFFF/filled-trash.png" alt="filled-trash"/></a></td>
-        </tr>
-        <%}%>
+
         </tbody>
 
     </table>
@@ -115,7 +145,22 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
 <br><br><br>
 
 
+
+
+<script>
+    function confirmarBorrado(event) {
+        if (!confirm('¿Estás seguro de que deseas borrar esta evaluación?')) {
+            event.preventDefault();
+        }
+    }
+</script>
+
+
 <script src="js/bootstrap/bootstrap.js"></script>
-<script src="../js/bootstrap/bootstrap.min.js"></script>
+<script src="js/bootstrap/bootstrap.bundle.js"></script>
+<script src="js/bootstrap/bootstrap.esm.js"></script>
+
+
+
 </body>
 </html>
