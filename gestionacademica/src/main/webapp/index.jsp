@@ -1,12 +1,20 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<% String msgError = (String) session.getAttribute("msgError"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
   <link rel="stylesheet" href="css/index.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="js/showError.js"></script>
 
   <title>Inicio de Sesión</title>
 </head>
-<body>
+<body <% if (msgError != null) {%>
+        onload="showError('<%=msgError%>')"
+        <% }
+          session.removeAttribute("msgError");
+        %>>
 
 <section>
   <div class="form-box">

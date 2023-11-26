@@ -52,6 +52,8 @@ public class LoginServlet extends HttpServlet {
                     httpSession.setAttribute("userLog", usuario);
 
                     if(usuario.getIdRol() == 3){
+                        Integer cantIngresos = userDao.ingresosXusuario(usuario.getIdUsuario());
+                        userDao.updateIngresos(usuario.getIdUsuario(), cantIngresos + 1);
                         response.sendRedirect(request.getContextPath() +"/decano?action=home");
 
                     } else if(usuario.getIdRol() == 4){
@@ -63,6 +65,8 @@ public class LoginServlet extends HttpServlet {
 
 
                 }else{
+                    HttpSession httpSession = request.getSession();
+                    httpSession.setAttribute("msgError", "Contraseña incorrecta");
                     response.sendRedirect(request.getContextPath());
                 }
 

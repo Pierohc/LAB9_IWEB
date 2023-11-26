@@ -223,6 +223,46 @@ public class UserDao extends DaoBase{
         }
     }
 
+    public void updateIngresos(Integer idUsuario, Integer cantidad){
+
+        String sql = "update usuario set cantidad_ingresos=? where idusuario=? ";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1, cantidad);
+            pstmt.setInt(2, idUsuario);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer ingresosXusuario(Integer idUsuario){
+       Integer cant = null;
+
+        String sql = "SELECT cantidad_ingresos from usuario where idusuario = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1, idUsuario);
+
+            try(ResultSet rs = pstmt.executeQuery()){
+                if (rs.next()){
+                    cant = rs.getInt(1);
+                }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return cant;
+    }
+
 
 
 
