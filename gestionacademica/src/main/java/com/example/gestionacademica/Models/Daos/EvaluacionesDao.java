@@ -43,7 +43,7 @@ public class EvaluacionesDao extends DaoBase{
         return list;
     }
 
-    public ArrayList<Evaluaciones> listarEvaluacionesSemestreActual(Integer idCurso, Integer idSemestre){
+    public ArrayList<Evaluaciones> listarEvaluacionesXsemestre(Integer idCurso, Integer idSemestre){
         ArrayList<Evaluaciones> list = new ArrayList<>();
 
         String sql = "SELECT * FROM lab_9.evaluaciones where idcurso = ? and idsemestre=?";

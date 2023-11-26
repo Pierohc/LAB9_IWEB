@@ -121,7 +121,7 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
         }
     }
 </script>
-<script src="js/bootstrap/bootstrap.js"></script>
-<script src="../js/bootstrap/bootstrap.min.js"></script>
+
+
 </body>
 </html>

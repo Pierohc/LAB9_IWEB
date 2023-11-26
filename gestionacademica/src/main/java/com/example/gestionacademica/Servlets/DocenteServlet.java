@@ -26,18 +26,38 @@ public class DocenteServlet extends HttpServlet {
 
          if(usuario != null && usuario.getIdRol() == 4){
             String action = request.getParameter("action") == null? "home" : request.getParameter("action");
+            String idFiltro = request.getParameter("id");
 
             switch (action){
 
                 case "home":
 
-                    Integer idCurso = chd.obtenerIdCursoXidDocente(usuario.getIdUsuario());
-                    ArrayList<Evaluaciones> listaCursosPorDocente = evDao.listarEvaluacionesDeDocente(idCurso);
-                    Semestre semestreHabilitado = semestreDao.semestreHabilitado();
+                    if (idFiltro == null){
+                        Integer idCurso = chd.obtenerIdCursoXidDocente(usuario.getIdUsuario());
+                        ArrayList<Evaluaciones> listaCursosPorDocente = evDao.listarEvaluacionesDeDocente(idCurso);
+                        Semestre semestreHabilitado = semestreDao.semestreHabilitado();
+                        ArrayList<Semestre> listaSemestres = semestreDao.listaSemestres();
 
-                    request.setAttribute("semestreHabilitado", semestreHabilitado);
-                    request.setAttribute("listaEvaluaciones", listaCursosPorDocente);
-                    request.getRequestDispatcher("/docente/lista_evaluaciones.jsp").forward(request,response);
+                        request.setAttribute("listaSemestres", listaSemestres);
+                        request.setAttribute("semestreHabilitado", semestreHabilitado);
+                        request.setAttribute("listaEvaluaciones", listaCursosPorDocente);
+                        request.getRequestDispatcher("/docente/lista_evaluaciones.jsp").forward(request,response);
+                    }else{
+
+                        Integer idCurso2 = chd.obtenerIdCursoXidDocente(usuario.getIdUsuario());
+                        ArrayList<Evaluaciones> listaEvFiltrada = evDao.listarEvaluacionesXsemestre(idCurso2, Integer.parseInt(idFiltro));
+                        ArrayList<Semestre> listaSemestres = semestreDao.listaSemestres();
+                        Semestre semestreHabilitado2 = semestreDao.semestreHabilitado();
+
+                        request.setAttribute("semestreSeleccionado", semestreDao.semestreXid(Integer.parseInt(idFiltro)));
+                        request.setAttribute("listaSemestres", listaSemestres);
+                        request.setAttribute("semestreHabilitado", semestreHabilitado2);
+                        request.setAttribute("listaEvaluaciones", listaEvFiltrada);
+                        request.getRequestDispatcher("/docente/lista_evaluaciones.jsp").forward(request,response);
+
+                    }
+
+
                     break;
 
                 case "newEv":
@@ -114,37 +134,6 @@ public class DocenteServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/docente?action=home");
 
                 break;
-
-            case "filtro":
-                String filtro = request.getParameter("filter");
-
-
-                if(filtro.equals("current")){
-                    Semestre semestreHabilitado2 = semestreDao.semestreHabilitado();
-                    Integer idCurso2 = chd.obtenerIdCursoXidDocente(usuario.getIdUsuario());
-                    ArrayList<Evaluaciones> listaEvCurrent = evDao.listarEvaluacionesSemestreActual(idCurso2, semestreHabilitado2.getIdSemestre());
-
-
-                    request.setAttribute("semestreHabilitado", semestreHabilitado2);
-                    request.setAttribute("listaEvaluaciones", listaEvCurrent);
-                    request.getRequestDispatcher("/docente/lista_evaluaciones.jsp").forward(request,response);
-
-                }else{
-                    Semestre semestreHabilitado3 = semestreDao.semestreHabilitado();
-                    Integer idCurso3 = chd.obtenerIdCursoXidDocente(usuario.getIdUsuario());
-                    ArrayList<Evaluaciones> listaEvPast = evDao.listarEvaluacionesSemestrePasado(idCurso3, semestreHabilitado3.getIdSemestre());
-
-                    request.setAttribute("semestreHabilitado", semestreHabilitado3);
-                    request.setAttribute("listaEvaluaciones", listaEvPast);
-                    request.getRequestDispatcher("/docente/lista_evaluaciones.jsp").forward(request,response);
-
-                }
-
-
-
-
-
-
 
         }
 
