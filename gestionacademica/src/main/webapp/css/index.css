@@ -11,7 +11,7 @@ section{
     min-height: 100vh;
     width: 100%;
 
-    background: url('https://img.freepik.com/vector-gratis/fondo-ondulado-oscuro-futurista_23-2148400222.jpg?w=1380&t=st=1701018604~exp=1701019204~hmac=6f3067d3ac84f27ded19d8075e555569d9cb5b2ee7691fc146572d2bfc3cbf6e')no-repeat;
+    background: url('../imgs/background.jpg')no-repeat;
     background-position: center;
     background-size: cover;
 }
