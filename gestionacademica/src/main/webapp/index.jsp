@@ -11,7 +11,7 @@
   <title>Inicio de Sesión</title>
 </head>
 <body <% if (msgError != null) {%>
-        onload="showError('<%=msgError%>')"
+        onload="errorCredentials('<%=msgError%>')"
         <% }
           session.removeAttribute("msgError");
         %>>

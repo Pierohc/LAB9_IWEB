@@ -10,3 +10,15 @@ function showError(errorMessage) {
     });
 }
 
+
+function errorCredentials(errorMessage) {
+    Swal.fire({
+        icon: 'error',
+        title: 'ERROR:',
+        iconColor: '#DC3545',
+        confirmButtonColor: '#DC3545',
+        confirmButtonText: "Volver a ingresar los datos",
+        text: errorMessage,
+    });
+}
+

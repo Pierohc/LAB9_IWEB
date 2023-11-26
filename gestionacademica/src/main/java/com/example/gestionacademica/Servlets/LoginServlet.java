@@ -66,7 +66,7 @@ public class LoginServlet extends HttpServlet {
 
                 }else{
                     HttpSession httpSession = request.getSession();
-                    httpSession.setAttribute("msgError", "Contraseña incorrecta");
+                    httpSession.setAttribute("msgError", "Correo o contraseña incorrecta");
                     response.sendRedirect(request.getContextPath());
                 }
 
