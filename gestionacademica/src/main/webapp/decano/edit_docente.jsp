@@ -95,6 +95,13 @@ background: radial-gradient(circle, rgba(45,0,83,1) 0%, rgba(35,3,80,1) 59%, rgb
                             <input type="hidden" class="form-control" name="idDocente"  value="<%=usuario.getIdUsuario()%>" >
                         </div>
 
+                        <div style="padding-top: 1.5em;"></div>
+                        <div class="form-group" style="padding-right: 1rem">
+                            <label style="text-align: left;">
+                                <strong>Correo:</strong></label>
+                            <input type="text" class="form-control" name="nombre" id="nombre" value="<%=usuario.getCorreo()%>" readonly>
+                        </div>
+
 
 
 

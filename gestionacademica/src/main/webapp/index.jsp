@@ -23,9 +23,16 @@
 
         <div class="inputbox">
           <ion-icon name="lock-closed-outline"></ion-icon>
-          <input type="password" name="password" required>
+          <input type="password" name="password" id="contrasena" required>
           <label for="">Contraseña</label>
         </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="mostrarContrasena" >
+          <label style="color:#ffffff" class="form-check-label" for="flexCheckDefault">Mostrar contraseña</label>
+        </div>
+
+        <br>
 
         <button type="submit">Ingresar</button>
 
@@ -35,7 +42,16 @@
 </section>
 
 
-
+<script>
+  document.getElementById("mostrarContrasena").addEventListener("change", function() {
+    var contrasenaInput = document.getElementById("contrasena");
+    if (this.checked) {
+      contrasenaInput.type = "text";
+    } else {
+      contrasenaInput.type = "password";
+    }
+  });
+</script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
